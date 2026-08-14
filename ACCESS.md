@@ -20,6 +20,6 @@ cloudflared --config ~/.cloudflared/config-dsh.yml tunnel run dsh-web
 
 ## Control
 
-Use the same Web UI as localhost: Settings → Models, Choose workspace, then send a task.
+Use the same Web UI as localhost: Settings → Models, then **Choose workspace**. The public origin uses the in-app directory browser (`listDirectory`), not the native OS dialog (`pickDirectory` is loopback-only and returns HTTP 403 from a remote tab).
 
 Tunnel name: `dsh-web`. Tunnel id: `3b081e1e-9bd7-4f6e-b953-084940fa0503`. Config: `~/.cloudflared/config-dsh.yml`. Access app id: `d3c088b6-2c8d-4333-9ba5-ba91f79dd53c`. Policy: reusable `Allow owner emails`.
