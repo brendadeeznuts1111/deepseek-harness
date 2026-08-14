@@ -1,0 +1,11 @@
+# Tutorial capstone overlay: adds the tutorial greet + weather tools to a
+# profile tree. Applied after the profile layer and user layers via `--patch`.
+# `insert` (no id) appends new entries to the root tree; a bare id-targeted
+# patch would only override an existing row. The `name` specifiers are
+# absolute paths into the version-controlled examples/tutorial-tools leaf;
+# change them if your checkout lives elsewhere.
+- insert:
+    - id: tutorial-greet-tool
+      name: '/Users/nolarose/code/deepseek-harness/examples/tutorial-tools/src/greet.ts'
+    - id: tutorial-weather-tool
+      name: '/Users/nolarose/code/deepseek-harness/examples/tutorial-tools/src/weather.ts'
