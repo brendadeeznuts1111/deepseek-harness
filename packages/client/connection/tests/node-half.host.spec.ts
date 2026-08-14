@@ -74,7 +74,7 @@ function fakeResponse(): { response: ServerResponse; state: { status?: number; b
   return { response, state }
 }
 
-async function mounted(config?: { trustedHosts?: string[] }): Promise<{
+async function mounted(config?: { trustedHosts?: string[]; allowPrivilegedOnTrustedHosts?: boolean }): Promise<{
   routes: WebRoute[]
   upgrades: WebUpgradeRoute[]
   dispose: () => Promise<void>
@@ -487,6 +487,22 @@ describe('connection node half over a real HTTP server', () => {
       }
       // Loopback reaches everything, configuration included.
       expect(await call(port, 'settings.describe', `127.0.0.1:${String(port)}`)).toBe(404)
+    } finally {
+      await close()
+      await dispose()
+    }
+  })
+
+  it('opens privileged methods to a declared authority when that grant is opted in', async () => {
+    const { routes, dispose } = await mounted({
+      trustedHosts: ['harness.example'],
+      allowPrivilegedOnTrustedHosts: true,
+    })
+    const { port, close } = await serve(routes)
+    try {
+      // 404 is the empty proxy's carrier answer — the extra loopback pin did not fire.
+      expect(await call(port, 'settings.describe', 'harness.example')).toBe(404)
+      expect(await call(port, 'settings.describe', 'other.example')).toBe(403)
     } finally {
       await close()
       await dispose()
