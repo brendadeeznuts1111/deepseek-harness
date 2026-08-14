@@ -27,3 +27,7 @@ An opt-in Web overlay for durable, Session-local reminders. It supports positive
 ## acp-agent
 
 An Agent Client Protocol automation server for programmatic clients, with session, permission, and cancellation support. See the [ACP example reference](acp-agent/README.md).
+
+## tutorial-tools
+
+The finished tools from the Cordis first-plugin tutorial: a stateful `greet` tool and the `weather` tool it chains to, loaded into a profile through an overlay. See the [tutorial-tools example reference](tutorial-tools/README.md).

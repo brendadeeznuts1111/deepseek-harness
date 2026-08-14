@@ -27,3 +27,7 @@
 ## acp-agent
 
 面向程序化客户端的 ACP（Agent Client Protocol）自动化服务器，支持会话、权限和取消操作。详见 [ACP 示例参考](acp-agent/README.md)。
+
+## tutorial-tools
+
+Cordis 首个插件教程的成品工具：一个有状态的 `greet` 工具，以及它链式调用的 `weather` 工具，通过 overlay 加载进 profile。详见 [tutorial-tools 示例参考](tutorial-tools/README.md)。
