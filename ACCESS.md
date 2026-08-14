@@ -7,7 +7,7 @@ Personal preview note for this fork. Do not merge into official `master`.
 - Public HTTPS: https://dsh.misson-control.com/
 - Local: http://127.0.0.1:3080/
 
-The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.0.1:3080`). Both processes must be running.
+The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.0.1:3080`). Both processes must be running. The public origin is behind Cloudflare Access (self-hosted app `DeepSeek Harness`); sign in with Google or a one-time PIN as an owner email. Local `http://127.0.0.1:3080/` is not behind Access.
 
 ## Start
 
@@ -22,4 +22,4 @@ cloudflared --config ~/.cloudflared/config-dsh.yml tunnel run dsh-web
 
 Use the same Web UI as localhost: Settings → Models, Choose workspace, then send a task.
 
-Tunnel name: `dsh-web`. Tunnel id: `3b081e1e-9bd7-4f6e-b953-084940fa0503`. Config: `~/.cloudflared/config-dsh.yml`.
+Tunnel name: `dsh-web`. Tunnel id: `3b081e1e-9bd7-4f6e-b953-084940fa0503`. Config: `~/.cloudflared/config-dsh.yml`. Access app id: `d3c088b6-2c8d-4333-9ba5-ba91f79dd53c`. Policy: reusable `Allow owner emails`.
