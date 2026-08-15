@@ -30,4 +30,4 @@
 
 ## tutorial-tools
 
-Cordis 首个插件教程的成品工具：一个有状态的 `greet` 工具，以及它链式调用的 `weather` 工具，通过 overlay 加载进 profile。详见 [tutorial-tools 示例参考](tutorial-tools/README.md)。
+Cordis 首个插件教程的成品工具，以可安装的 `@deepseek-ai/dsh-tutorial-tools` 包（含 `ctx.weather` 能力缝）与 `tutorial` Web UI agent preset 的形式内置。详见 [包参考](../packages/examples/tutorial-tools/README.md)。

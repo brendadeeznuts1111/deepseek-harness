@@ -30,4 +30,4 @@ An Agent Client Protocol automation server for programmatic clients, with sessio
 
 ## tutorial-tools
 
-The finished tools from the Cordis first-plugin tutorial: a stateful `greet` tool and the `weather` tool it chains to, loaded into a profile through an overlay. See the [tutorial-tools example reference](tutorial-tools/README.md).
+The finished tools from the Cordis first-plugin tutorial, shipped as the installable `@deepseek-ai/dsh-tutorial-tools` package with a `ctx.weather` capability seam and the `tutorial` Web UI agent preset. See the [package reference](../packages/examples/tutorial-tools/README.md).

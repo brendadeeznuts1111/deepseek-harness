@@ -197,7 +197,7 @@ describe('the shipped Web composition', () => {
   it('supplies both shipped presets, and only those, from the system root', async () => {
     const listed = await ctx.agentPresets.list()
 
-    expect(listed.map(preset => preset.id).sort()).toEqual(['code', 'cordis', 'minimal', 'standard'])
+    expect(listed.map(preset => preset.id).sort()).toEqual(['code', 'cordis', 'minimal', 'standard', 'tutorial'])
     expect(listed.every(preset => preset.trust === 'system')).toBe(true)
     expect(ctx.agentPresets.defaultId).toBe('standard')
   })
@@ -240,6 +240,24 @@ describe('the shipped Web composition', () => {
         .toContain('Absolute path')
       expect(ctx.agentPresets.serviceFor(handle.agent, 'compaction')).toBeUndefined()
       expect(handle.agent.ctx.get('compaction')).toBeUndefined()
+    } finally {
+      await handle.dispose()
+    }
+  })
+
+  it('composes the standard toolset plus the weather seam from `tutorial`', async () => {
+    const handle = await ctx.agents.create({
+      sessionId: SessionId(`preset-tutorial-${randomUUID()}`),
+      setup: agentCtx => ctx.agentPresets.mount(agentCtx, 'tutorial').then(() => undefined),
+    })
+    try {
+      // Standard's whole catalog plus the tutorial consumers, and the
+      // entry-local weather service mounted inside the preset realm.
+      const names = toolNames(ctx, handle.agent)
+      expect(names).toContain('bash')
+      expect(names).toContain('greet')
+      expect(names).toContain('weather')
+      expect(ctx.agentPresets.serviceFor(handle.agent, 'weather')).toBeDefined()
     } finally {
       await handle.dispose()
     }
