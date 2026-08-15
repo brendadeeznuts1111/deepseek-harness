@@ -1,0 +1,3 @@
+name: 教程模式
+description: 具备标准模式的全部能力，并额外提供教程的 greet 与 weather 工具（含可选的天气能力缝）。
+order: 5

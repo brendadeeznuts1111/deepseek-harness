@@ -2645,6 +2645,19 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'weather',
+    summary: 'Abstract current-weather service.',
+    description: 'Abstract current-weather service. Subclass, implement get, and load the subclass as a plugin — it registers as `ctx.weather` (one implementation per context; a second registration throws, which is cordis\' standard duplicate-service behavior).\n\nImplementations must honor these semantics:\n\n- get trims the location and rejects an empty one.\n- get rejects only for infrastructure or validation failures; a successful lookup always resolves a complete WeatherResult.',
+    methods: [
+      {
+        signature: 'abstract get(request: WeatherRequest): Promise<WeatherResult>',
+        description: 'Look up the current weather for one location.',
+        parameters: [{ name: 'request', description: 'the location to look up and optional caller cancellation.' }],
+        returns: 'the structured current-weather answer.',
+      },
+    ],
+  },
+  {
     key: 'web',
     summary: 'The web access service.',
     description: 'The web access service. Registered as `ctx.web` (one instance per context).\n\nSelection semantics (resolved at execution time, never order-dependent):\n\n- A configured id that is registered and `available()` → that provider.\n- A configured id not registered → `WEB_PROVIDER_CONFIGURED_MISSING`.\n- A configured id registered but unavailable → `WEB_PROVIDER_CONFIGURED_UNAVAILABLE`.\n- No id configured, exactly one registered usable provider → that provider.\n- No id configured, multiple usable providers → `WEB_PROVIDER_AMBIGUOUS`.\n- No id configured, no usable provider → `WEB_PROVIDER_UNAVAILABLE`.',
@@ -5897,6 +5910,14 @@ export const TYPE_API: readonly TypeApiEntry[] = [
   {
     name: 'WebBootBatchPhase',
     declaration: 'export type WebBootBatchPhase = \'bootstrap\' | \'application\';',
+  },
+  {
+    name: 'WeatherRequest',
+    declaration: 'export interface WeatherRequest {\n    location: string;\n    signal?: AbortSignal;\n}',
+  },
+  {
+    name: 'WeatherResult',
+    declaration: 'export interface WeatherResult {\n    location: string;\n    temperatureC: number;\n    condition: string;\n}',
   },
   {
     name: 'WebBootEntry',

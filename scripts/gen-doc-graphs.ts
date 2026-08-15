@@ -108,6 +108,15 @@ const SERVICE_ROLES: ServiceRole[] = [
     note: 'The host commits accepted images before session events; provider adapters resolve authorized durable references into provider-native content.',
   },
   {
+    key: 'weather',
+    pkg: 'tutorial-tools',
+    title: 'Current-weather lookup',
+    mode: 'seam',
+    implementations: ['tutorial-tools'],
+    consumers: ['tutorial-tools'],
+    note: 'The tutorial capability seam: local and live-web providers register as ctx.weather; the greet and weather tools consume it.',
+  },
+  {
     key: 'llm',
     pkg: 'llm',
     title: 'LLM adapter registry',

@@ -1,13 +1,35 @@
+/**
+ * Model-facing Consumer of the `ctx.weather` capability seam plus the LLM
+ * seam: greets a person with a warm, model-generated message, optionally
+ * flavored by the current weather, remembering the last person greeted and
+ * each person's last location through an optional `ctx.storage` domain.
+ * @module @deepseek-ai/dsh-tutorial-tools/tool-greet
+ */
+
 import type { Context } from '@deepseek-ai/cordis'
+import Schema from '@deepseek-ai/schemastery'
 import { defineTool } from '@deepseek-ai/dsh-tools'
-import { CallId, createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import { z } from 'zod'
 import { defineDomain, type Domain } from '@deepseek-ai/dsh-storage-domain'
 import type {} from '@deepseek-ai/dsh-storage'
 import type {} from '@deepseek-ai/dsh-agent-default-model'
 
-export const name = 'greet-tool-llm'
-export const inject = ['tools', 'llm', 'agentDefaultModel']
+export const name = 'tool-greet'
+export const inject = ['tools', 'llm', 'agentDefaultModel', 'weather']
+
+/** Plugin config (schema supplies the defaults; all fields optional at the input). */
+export interface Config {
+  /** Word budget the model-generated greeting must stay under. */
+  maxWords?: number
+  /** Fallback greeting template when the model call fails or yields nothing; `{name}` is replaced with the person's name. */
+  fallbackGreeting?: string
+}
+
+export const Config: Schema<Config> = Schema.object({
+  maxWords: Schema.number().min(1).default(20),
+  fallbackGreeting: Schema.string().min(1).default('Hello, {name}!'),
+})
 
 // Optional durable memory via the storage domain form. Storage is NOT a hard
 // requirement: headless profiles may not mount it, so the plugin probes
@@ -31,7 +53,9 @@ const greetMemorySpec = defineDomain({
 
 type GreetMemoryDomain = Domain<typeof greetMemorySpec>
 
-export function apply(ctx: Context) {
+export function apply(ctx: Context, config: Config): void {
+  // Schemastery fills defaults before apply; the type does not encode that step.
+  const resolved = config as Required<Config>
   // Lazily-opened domain handle; closed on plugin unload. The facility
   // enforces single-open per name, and open() loads all records, so open once.
   let domain: GreetMemoryDomain | undefined
@@ -57,6 +81,14 @@ export function apply(ctx: Context) {
       schema: { type: 'string' },
       render: (_args, value) => [{ type: 'text', text: value }],
     },
+    presentCall: (args) => {
+      const { name: who } = args as { name?: string }
+      return {
+        card: 'generic',
+        title: `Greet ${who?.trim() || 'the remembered person'}`,
+        kind: 'execute',
+      }
+    },
     async execute(args, exec) {
       const memory = await ensureMemory()
       const table = memory?.table('people')
@@ -71,19 +103,15 @@ export function apply(ctx: Context) {
       const remembered = table?.get(name.toLowerCase())
       const location = args.location ?? remembered?.location
 
-      // 3. Optional tool-to-tool sub-dispatch: ask the weather tool for
-      // context through the same registry pipeline.
+      // 3. Optional weather flavoring through the capability seam. Weather is
+      // flavoring, never required: a failing provider must not sink the greeting.
       let weatherContext = ''
       if (location !== undefined && location !== '') {
-        const weatherResult = await ctx.tools.execute({
-          callId: CallId(crypto.randomUUID()),
-          name: 'weather',
-          arguments: { location },
-          signal: exec.signal,
-        })
-        if (!weatherResult.isError) {
-          const w = weatherResult.value as { location: string; temperatureC: number; condition: string }
+        try {
+          const w = await ctx.weather.get({ location, signal: exec.signal })
           weatherContext = ` It is ${w.temperatureC}°C with ${w.condition} in ${w.location}.`
+        } catch {
+          weatherContext = ''
         }
       }
 
@@ -94,7 +122,7 @@ export function apply(ctx: Context) {
       const provider = agentSelection?.provider ?? fallback.provider
       const model = agentSelection?.model ?? fallback.model
 
-      const prompt = `Write a warm, one-sentence greeting for ${name}. Be creative but keep it under 20 words.`
+      const prompt = `Write a warm, one-sentence greeting for ${name}. Be creative but keep it under ${resolved.maxWords} words.`
         + (weatherContext === ''
           ? ''
           : ` Weather context:${weatherContext} Mention the weather naturally if it fits.`)
@@ -115,7 +143,7 @@ export function apply(ctx: Context) {
           throw new Error(`greet: inner LLM call ended with reason ${chunk.reason.kind}`)
         }
       }
-      greeting ||= `Hello, ${name}!`
+      greeting ||= resolved.fallbackGreeting.replace('{name}', name)
 
       // 6. Persist: remember this person and mark them the last greeter.
       if (memory && table) {

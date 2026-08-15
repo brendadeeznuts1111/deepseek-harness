@@ -515,6 +515,15 @@
         "tests/**/*.ts"
       ]
     },
+    "packages/examples/tutorial-tools": {
+      "entry": [
+        "tests/**/*.spec.ts"
+      ],
+      "project": [
+        "src/**/*.ts",
+        "tests/**/*.ts"
+      ]
+    },
     "packages/examples/agent-spine-demo": {
       "entry": [
         "tests/**/*.spec.ts",
