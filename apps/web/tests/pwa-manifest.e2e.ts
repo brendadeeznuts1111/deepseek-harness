@@ -8,6 +8,8 @@ const DIST_ROOT = fileURLToPath(new URL('../dist', import.meta.url))
 it('ships install metadata with the built web application', async () => {
   const index = await readFile(join(DIST_ROOT, 'index.html'), 'utf8')
   expect(index).toContain('<link rel="manifest" href="./manifest.webmanifest" />')
+  expect(index).toContain('<link rel="apple-touch-icon" href="/pwa-192.png" />')
+  expect(index).toContain('apple-mobile-web-app-capable')
 
   const manifest: unknown = JSON.parse(await readFile(join(DIST_ROOT, 'manifest.webmanifest'), 'utf8'))
   expect(manifest).toEqual({
@@ -17,13 +19,31 @@ it('ships install metadata with the built web application', async () => {
     start_url: '/',
     scope: '/',
     display: 'fullscreen',
-    icons: [{
-      src: '/favicon.svg',
-      sizes: 'any',
-      type: 'image/svg+xml',
-      purpose: 'any',
-    }],
+    icons: [
+      {
+        src: '/favicon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'any',
+      },
+      {
+        src: '/pwa-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/pwa-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+    ],
   })
+
+  const sw = await readFile(join(DIST_ROOT, 'sw.js'), 'utf8')
+  expect(sw).toContain('event.respondWith(fetch(event.request))')
+  expect(sw).not.toContain('caches.')
 })
 
 it('ships a favicon that switches to a light mark under dark color scheme', async () => {

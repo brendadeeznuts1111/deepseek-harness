@@ -50,6 +50,7 @@ const MIME: Record<string, string> = {
   // the worker inflates the body itself, and a transport-level encoding would
   // leave it inflating an already-decoded archive.
   '.gz': 'application/gzip',
+  '.png': 'image/png',
 }
 
 const STATIC_MISS_CODES: ReadonlySet<string | undefined> = new Set([
