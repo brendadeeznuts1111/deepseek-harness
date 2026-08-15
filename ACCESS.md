@@ -7,7 +7,7 @@ Personal preview note for this fork. Do not merge into official `master`.
 - Public HTTPS: https://dsh.misson-control.com/
 - Local: http://127.0.0.1:3080/
 
-The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.0.1:3080`). Both processes must be running. The public origin is behind Cloudflare Access (self-hosted app `DeepSeek Harness`); sign in with Google or a one-time PIN as an owner email. Local `http://127.0.0.1:3080/` is not behind Access.
+The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.0.1:3080`). LaunchAgents `com.nolarose.dsh-web` and `com.nolarose.dsh-tunnel` keep both processes up across login and the agent 10-hour cap. The public origin is behind Cloudflare Access; sign in with Google or a one-time PIN as an owner email. Local `http://127.0.0.1:3080/` is not behind Access. Supporting browsers can install the origin as a PWA (manifest + network-only service worker; no offline cache).
 
 ## Start
 

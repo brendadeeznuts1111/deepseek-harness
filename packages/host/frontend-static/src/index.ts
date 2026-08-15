@@ -42,6 +42,7 @@ const MIME: Record<string, string> = {
   '.json': 'application/json',
   '.map': 'application/json',
   '.webmanifest': 'application/manifest+json',
+  '.png': 'image/png',
 }
 
 /**
