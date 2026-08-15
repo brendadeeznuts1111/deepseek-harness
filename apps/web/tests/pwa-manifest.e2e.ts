@@ -77,6 +77,10 @@ it('ships install metadata with the built web application', async () => {
       { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
     ],
   })
+
+  const sw = await readFile(join(DIST_ROOT, 'sw.js'), 'utf8')
+  expect(sw).toContain('event.respondWith(fetch(event.request))')
+  expect(sw).not.toContain('caches.')
 })
 
 it('decodes every generated and shipped icon with its full artwork and opaque corners', async () => {

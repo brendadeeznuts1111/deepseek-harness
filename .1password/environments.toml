@@ -1,0 +1,5 @@
+# wired by code-project sync-environments --apply
+
+[[environment]]
+id = "iyxquz3ucs7r4gpsrv2yepvgci"
+mount_paths = [".env"]
