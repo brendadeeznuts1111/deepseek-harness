@@ -132,7 +132,7 @@ const PRIVILEGED_METHODS = new Set([
  * the prefix passes the browser-trust fence first (DNS-rebinding and
  * cross-site defense — [api-request-trust](./api-request-trust.ts));
  * privileged methods additionally pass it with an empty trust list, which
- * pins them to loopback.
+ * pins them to loopback, unless `allowPrivilegedOnTrustedHosts` is true.
  * @param ctx - Host plugin context.
  * @param config - resolved plugin config (schema defaults applied).
  */

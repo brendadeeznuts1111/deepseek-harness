@@ -12,14 +12,14 @@ The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.
 ## Start
 
 ```sh
-pnpm dsh web --trusted-host dsh.misson-control.com
+pnpm dsh --patch local-access.overlay.yml web --trusted-host dsh.misson-control.com
 cloudflared --config ~/.cloudflared/config-dsh.yml tunnel run dsh-web
 ```
 
-`--trusted-host dsh.misson-control.com` is required so the `/api` browser-trust fence accepts the public origin.
+`--patch` must precede `web`: it is a launcher flag. `--trusted-host dsh.misson-control.com` is required so the `/api` browser-trust fence accepts the public origin. The shipped connection row keeps `allowPrivilegedOnTrustedHosts` false; only this overlay turns it on.
 
 ## Control
 
-Use the same Web UI as localhost: Settings → Models, then **Choose workspace**. The public origin uses the in-app directory browser. Settings and credentials are loopback-only unless the web profile sets `allowPrivilegedOnTrustedHosts` (this checkout does, behind Cloudflare Access).
+Use the same Web UI as localhost: Settings → Models, then **Choose workspace**. The public origin uses the in-app directory browser. Settings and credentials are loopback-only unless `--patch local-access.overlay.yml` sets `allowPrivilegedOnTrustedHosts` (this checkout's start command does, behind Cloudflare Access).
 
 Tunnel name: `dsh-web`. Tunnel id: `3b081e1e-9bd7-4f6e-b953-084940fa0503`. Config: `~/.cloudflared/config-dsh.yml`. Access app id: `d3c088b6-2c8d-4333-9ba5-ba91f79dd53c`. Policy: reusable `Allow owner emails`.

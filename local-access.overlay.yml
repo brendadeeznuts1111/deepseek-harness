@@ -1,0 +1,6 @@
+# Fork-only Web overlay for this checkout's public origin.
+# Do not merge into official master. A patch replaces the whole row config.
+- id: connection
+  config:
+    trustedHosts: !!js ctx.webRuntime.trustedHosts
+    allowPrivilegedOnTrustedHosts: true
