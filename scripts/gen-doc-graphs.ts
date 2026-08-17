@@ -389,6 +389,15 @@ const SERVICE_ROLES: ServiceRole[] = [
     note: 'Plugins declare effect-scoped DSH_* facts; each shell tool collects one trusted snapshot per execution and its executor rebuilds the namespace.',
   },
   {
+    key: 'bun',
+    pkg: 'bun',
+    title: 'Bun executor seam',
+    mode: 'seam',
+    implementations: ['bun-local'],
+    consumers: ['tool-bun'],
+    note: 'Opt-in host Bun argv execution. Does not replace ctx.shell or ctx.codeRuntime; the model-facing bun tool and a later sandbox provider share this seam.',
+  },
+  {
     key: 'terminals',
     pkg: 'terminal',
     title: 'Persistent PTY session registry',
