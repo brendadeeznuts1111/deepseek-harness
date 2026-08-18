@@ -281,6 +281,7 @@ const subsystemGroups = [
   ['执行与工具', 'Execution and tools', [
     ['tools.md', '工具', 'Tools'],
     ['shell.md', 'Bash 执行', 'Bash execution'],
+    ['bun.md', 'Bun 执行', 'Bun execution'],
     ['subprocess.md', '子进程', 'Subprocesses'],
     ['terminal.md', 'PTY 会话', 'PTY sessions'],
     ['jobs.md', '后台任务', 'Background jobs'],

@@ -1,0 +1,3 @@
+name: Bun mode
+description: Standard coding agent plus an opt-in bun tool. Alternative to bun.overlay.yml — do not stack both. The host bun executable must be on PATH or set bunPath.
+order: 6

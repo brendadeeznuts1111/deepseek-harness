@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, readFile, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { delimiter, dirname, join } from 'node:path'
 import { Context } from '@deepseek-ai/cordis'
 import { boot, healProfilesModuleFallback, loadOverlayPatches } from '@deepseek-ai/dsh-app-boot'
 import { provideCmdline } from '@deepseek-ai/dsh-cmdline'
@@ -197,9 +197,33 @@ describe('the shipped Web composition', () => {
   it('supplies both shipped presets, and only those, from the system root', async () => {
     const listed = await ctx.agentPresets.list()
 
-    expect(listed.map(preset => preset.id).sort()).toEqual(['code', 'cordis', 'minimal', 'standard'])
+    expect(listed.map(preset => preset.id).sort()).toEqual(['bun', 'code', 'cordis', 'minimal', 'standard'])
     expect(listed.every(preset => preset.trust === 'system')).toBe(true)
     expect(ctx.agentPresets.defaultId).toBe('standard')
+  })
+
+  it('composes the standard toolset plus the bun seam from `bun`', async () => {
+    const stubDir = await mkdtemp(join(tmpdir(), 'dsh-bun-preset-'))
+    const stubName = process.platform === 'win32' ? 'bun.exe' : 'bun'
+    await writeFile(join(stubDir, stubName), '')
+    const previousPath = process.env.PATH
+    process.env.PATH = previousPath === undefined || previousPath.length === 0
+      ? stubDir
+      : `${stubDir}${delimiter}${previousPath}`
+    const handle = await ctx.agents.create({
+      sessionId: SessionId(`preset-bun-${randomUUID()}`),
+      setup: agentCtx => ctx.agentPresets.mount(agentCtx, 'bun').then(() => undefined),
+    })
+    try {
+      const names = toolNames(ctx, handle.agent)
+      expect(names).toContain('bash')
+      expect(names).toContain('bun')
+      expect(ctx.agentPresets.serviceFor(handle.agent, 'bun')).toBeDefined()
+    } finally {
+      await handle.dispose()
+      if (previousPath === undefined) delete process.env.PATH
+      else process.env.PATH = previousPath
+    }
   })
 
   it('composes the full agent from `standard`', async () => {
