@@ -19,6 +19,9 @@ function candidateExists(candidate: string): boolean {
     const stat = lstatSync(candidate)
     return stat.isFile() || stat.isSymbolicLink()
   } catch {
+    // ENOENT (the candidate vanished between listing and probing) is the only
+    // expected failure; any other error names an unspawnable path, so false
+    // is the safe answer for it too.
     return false
   }
 }

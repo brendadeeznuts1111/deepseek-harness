@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-The capability family spans the Bun executor seam, its local implementation, and the model-facing tool. All are **product** packages. The family is **opt-in**: `dsh-base` and `dsh-web-app` do not mount it. A host adds the rows through the `bun` agent preset or `--patch bun.overlay.yml`.
+The capability family spans the Bun executor seam, its local implementation, and the model-facing tool. All are **product** packages. The family is **opt-in**: `dsh-base` and `dsh-web-app` do not mount it. A host adds the rows through the `bun` agent preset or `--patch bun.overlay.yml`, not both: each path registers `tool-bun`.
 
 | Package | Role | ctx key |
 |---|---|---|

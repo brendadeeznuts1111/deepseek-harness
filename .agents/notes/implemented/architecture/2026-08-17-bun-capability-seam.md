@@ -27,4 +27,4 @@ Bun is a complete opt-in capability seam under `packages/bun/`:
 
 ## Consequences
 
-Selecting the Bun preset or applying `bun.overlay.yml` adds one tool and requires a spawnable host `bun` (or `bunPath`). Machines without Bun cannot load that composition. A later `bun-sandbox` provider can share `ctx.bun` without touching `ctx.shell` or Code Mode. The privileged-API overlay stays a separate `--patch`.
+Selecting the Bun preset or applying `bun.overlay.yml` adds one tool and requires a spawnable host `bun` (or `bunPath`). Do not stack those two selection paths: each registers `tool-bun`. Machines without Bun cannot load that composition. A later `bun-sandbox` provider can share `ctx.bun` without touching `ctx.shell` or Code Mode. The privileged-API overlay stays a separate `--patch`.

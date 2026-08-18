@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-该能力家族涵盖 Bun 执行器 seam、其本地实现和面向模型的工具。这些全是**产品**包。该家族是**可选接入**：`dsh-base` 与 `dsh-web-app` 不会挂载它。宿主通过 `bun` agent preset 或 `--patch bun.overlay.yml` 加入这些行。
+该能力家族涵盖 Bun 执行器 seam、其本地实现和面向模型的工具。这些全是**产品**包。该家族是**可选接入**：`dsh-base` 与 `dsh-web-app` 不会挂载它。宿主通过 `bun` agent preset 或 `--patch bun.overlay.yml` 加入这些行，二者择一，不要叠用：每条路径都会注册 `tool-bun`。
 
 | 包 | 职责 | ctx key |
 |---|---|---|

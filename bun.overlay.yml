@@ -1,4 +1,5 @@
 # Opt-in Bun seam for a host composition. Does not grant privileged /api.
+# Alternative to the `bun` agent preset — do not stack both; each registers tool-bun.
 # A patch replaces the whole row config; bun-local fails the load if bun is missing.
 - insert:
     - id: bun-local

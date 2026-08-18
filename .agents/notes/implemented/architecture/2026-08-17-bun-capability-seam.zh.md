@@ -27,4 +27,4 @@ Bun 是 `packages/bun/` 下完整的可选能力 seam：
 
 ## 后果
 
-选择 Bun preset 或应用 `bun.overlay.yml` 会增加一个工具，并要求宿主上有可 spawn 的 `bun`（或 `bunPath`）。没有 Bun 的机器无法加载该组合。后续的 `bun-sandbox` 提供方可共用 `ctx.bun`，而无需改动 `ctx.shell` 或 Code Mode。特权 API overlay 仍是单独的 `--patch`。
+选择 Bun preset 或应用 `bun.overlay.yml` 会增加一个工具，并要求宿主上有可 spawn 的 `bun`（或 `bunPath`）。不要叠用这两条选择路径：每条都会注册 `tool-bun`。没有 Bun 的机器无法加载该组合。后续的 `bun-sandbox` 提供方可共用 `ctx.bun`，而无需改动 `ctx.shell` 或 Code Mode。特权 API overlay 仍是单独的 `--patch`。

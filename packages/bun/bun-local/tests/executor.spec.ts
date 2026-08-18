@@ -1,6 +1,6 @@
 import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { delimiter, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { Context } from '@deepseek-ai/cordis'
@@ -37,6 +37,26 @@ describe('LocalBunExecutor', () => {
     await ctx.plugin(LocalSubprocessRuntime)
     await expect(ctx.plugin(LocalBunExecutor, { bunPath: '/no/such/dsh-bun-binary' }))
       .rejects.toThrow(/not a spawnable file/)
+  })
+
+  it('loads from PATH when bunPath is omitted', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'dsh-bun-empty-config-'))
+    const stubName = process.platform === 'win32' ? 'bun.exe' : 'bun'
+    writeFileSync(join(dir, stubName), '')
+    const previousPath = process.env.PATH
+    process.env.PATH = previousPath === undefined || previousPath.length === 0
+      ? dir
+      : `${dir}${delimiter}${previousPath}`
+    const ctx = new Context()
+    try {
+      await ctx.plugin(LocalSubprocessRuntime)
+      await ctx.plugin(LocalBunExecutor)
+      expect(ctx.bun.resolve({ args: ['--version'] }).bunPath).toBe(join(dir, stubName))
+    } finally {
+      await ctx.fiber.dispose()
+      if (previousPath === undefined) delete process.env.PATH
+      else process.env.PATH = previousPath
+    }
   })
 
   it('rejects unusable numeric config', async () => {
