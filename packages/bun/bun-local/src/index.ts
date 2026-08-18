@@ -76,7 +76,10 @@ export function assertServiceableBunConfig(config: Config): void {
   if (resolved.graceMs > MAX_TIMER_DELAY_MS) {
     throw new Error(`bun-local: graceMs must be no greater than ${MAX_TIMER_DELAY_MS}`)
   }
-  resolveBunPath(resolved.bunPath)
+  // Omitted bunPath is resolved at load and when the field changes, not here.
+  if (resolved.bunPath !== undefined && resolved.bunPath.length > 0) {
+    resolveBunPath(resolved.bunPath)
+  }
 }
 
 /**

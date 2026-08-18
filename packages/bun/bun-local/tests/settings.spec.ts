@@ -49,4 +49,29 @@ describe('bun settings section', () => {
     expect(bun.resolve({ args: ['--version'] }).bunPath).toBe(other)
     await ctx.fiber.dispose()
   })
+
+  it('keeps a PATH-resolved binary across a timeout-only settings write', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'dsh-bun-settings-path-'))
+    const stubName = process.platform === 'win32' ? 'bun.exe' : 'bun'
+    const stubPath = join(dir, stubName)
+    writeFileSync(stubPath, '')
+    const previousPath = process.env.PATH
+    process.env.PATH = dir
+    const ctx = new Context()
+    try {
+      await ctx.plugin(LocalSubprocessRuntime)
+      await ctx.plugin(MemorySettings)
+      await ctx.plugin(LocalBunExecutor, { timeoutMs: 60_000 })
+      const bun = ctx.bun as LocalBunExecutor
+      expect(bun.resolve({ args: ['--version'] }).bunPath).toBe(stubPath)
+      process.env.PATH = ''
+      await ctx.settings.update(BUN_SETTINGS_NAMESPACE, { timeoutMs: 4_000 })
+      expect(bun.config.timeoutMs).toBe(4_000)
+      expect(bun.resolve({ args: ['--version'] }).bunPath).toBe(stubPath)
+    } finally {
+      await ctx.fiber.dispose()
+      if (previousPath === undefined) delete process.env.PATH
+      else process.env.PATH = previousPath
+    }
+  })
 })
