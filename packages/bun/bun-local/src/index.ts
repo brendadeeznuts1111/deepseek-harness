@@ -76,6 +76,7 @@ export function assertServiceableBunConfig(config: Config): void {
   if (resolved.graceMs > MAX_TIMER_DELAY_MS) {
     throw new Error(`bun-local: graceMs must be no greater than ${MAX_TIMER_DELAY_MS}`)
   }
+  resolveBunPath(resolved.bunPath)
 }
 
 /**
@@ -96,6 +97,8 @@ export class LocalBunExecutor extends BunExecutor {
   })
 
   private source: () => ResolvedConfig
+  /** The declared executable the current {@link resolvedBunPath} was resolved from. */
+  private declaredBunPath: string | undefined
   private resolvedBunPath: string
 
   /** Validated config (schemastery applied the defaults before construction). */
@@ -107,15 +110,20 @@ export class LocalBunExecutor extends BunExecutor {
     super(ctx)
     const entry = config as ResolvedConfig
     assertServiceableBunConfig(entry)
-    this.resolvedBunPath = resolveBunPath(entry.bunPath)
     this.source = () => entry
+    this.declaredBunPath = entry.bunPath
+    this.resolvedBunPath = resolveBunPath(entry.bunPath)
     installSettingsSection(ctx, BUN_SETTINGS_NAMESPACE, LocalBunExecutor.Config, entry, {
       validate: assertServiceableBunConfig,
       setSource: (current) => {
         this.source = current as () => ResolvedConfig
-        this.resolvedBunPath = resolveBunPath(this.config.bunPath)
       },
-      onChange: () => {},
+      onChange: () => {
+        const declared = this.source().bunPath
+        if (declared === this.declaredBunPath) return
+        this.declaredBunPath = declared
+        this.resolvedBunPath = resolveBunPath(declared)
+      },
     })
   }
 

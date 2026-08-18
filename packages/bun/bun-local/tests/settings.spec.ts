@@ -1,3 +1,6 @@
+import { mkdtempSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { Context } from '@deepseek-ai/cordis'
 import { SettingsProvider } from '@deepseek-ai/dsh-settings'
@@ -36,6 +39,14 @@ describe('bun settings section', () => {
     await expect(ctx.settings.update(BUN_SETTINGS_NAMESPACE, { timeoutMs: 0 }))
       .rejects.toThrow(/positive finite/)
     expect(bun.config.timeoutMs).toBe(5_000)
+
+    const other = join(mkdtempSync(join(tmpdir(), 'dsh-bun-settings-')), 'bun-other')
+    writeFileSync(other, '')
+    await ctx.settings.update(BUN_SETTINGS_NAMESPACE, { bunPath: other, timeoutMs: 5_000 })
+    expect(bun.resolve({ args: ['--version'] }).bunPath).toBe(other)
+    await expect(ctx.settings.update(BUN_SETTINGS_NAMESPACE, { bunPath: '/no/such/dsh-bun-binary' }))
+      .rejects.toThrow(/not a spawnable file/)
+    expect(bun.resolve({ args: ['--version'] }).bunPath).toBe(other)
     await ctx.fiber.dispose()
   })
 })
