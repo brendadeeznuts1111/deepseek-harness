@@ -114,11 +114,6 @@
       "@deepseek-ai/dsh-tools/types": ["./packages/core/tools/src/types.ts"],
       "@deepseek-ai/dsh-tool-subagent-control/list-agents": ["./packages/subagent/tool-subagent-control/src/list-agents.ts"],
       "@deepseek-ai/dsh-tool-subagent/model-selection-settings": ["./packages/subagent/tool-subagent/src/model-selection-settings.ts"],
-      "@deepseek-ai/dsh-tutorial-tools/weather-local": ["./packages/examples/tutorial-tools/src/weather-local.ts"],
-      "@deepseek-ai/dsh-tutorial-tools/weather-web": ["./packages/examples/tutorial-tools/src/weather-web.ts"],
-      "@deepseek-ai/dsh-tutorial-tools/tool-weather": ["./packages/examples/tutorial-tools/src/tool-weather.ts"],
-      "@deepseek-ai/dsh-tutorial-tools/tool-greet": ["./packages/examples/tutorial-tools/src/tool-greet.ts"],
-      "@deepseek-ai/dsh-tutorial-tools/invariant": ["./packages/examples/tutorial-tools/src/invariant.ts"],
       "@deepseek-ai/dsh-user-approval/types": ["./packages/interaction/user-approval/src/types.ts"],
       "@deepseek-ai/dsh-user-questions/types": ["./packages/interaction/user-questions/src/types.ts"],
       "@deepseek-ai/dsh-agent/types": ["./packages/core/agent/src/types.ts"],
@@ -542,6 +537,8 @@
       "@deepseek-ai/dsh-tool-workflow/invariant": ["./packages/workflow/tool-workflow/src/invariant.ts"],
       "@deepseek-ai/dsh-tools": ["./packages/core/tools/src"],
       "@deepseek-ai/dsh-tools/invariant": ["./packages/core/tools/src/invariant.ts"],
+      "@deepseek-ai/dsh-tutorial-tools": ["./packages/examples/tutorial-tools/src"],
+      "@deepseek-ai/dsh-tutorial-tools/invariant": ["./packages/examples/tutorial-tools/src/invariant.ts"],
       "@deepseek-ai/dsh-user-approval": ["./packages/interaction/user-approval/src"],
       "@deepseek-ai/dsh-user-approval/invariant": ["./packages/interaction/user-approval/src/invariant.ts"],
       "@deepseek-ai/dsh-user-questions": ["./packages/interaction/user-questions/src"],
@@ -562,3 +559,15 @@
       "@deepseek-ai/dsh-webhook/invariant": ["./packages/webhook/webhook/src/invariant.ts"],
       "@deepseek-ai/dsh-webhook-github": ["./packages/webhook/webhook-github/src"],
       "@deepseek-ai/dsh-webhook-github/invariant": ["./packages/webhook/webhook-github/src/invariant.ts"],
+      "@deepseek-ai/dsh-win32-process": ["./packages/subprocess/win32-process/src"],
+      "@deepseek-ai/dsh-win32-process/invariant": ["./packages/subprocess/win32-process/src/invariant.ts"],
+      "@deepseek-ai/dsh-workflow": ["./packages/workflow/workflow/src"],
+      "@deepseek-ai/dsh-workflow/invariant": ["./packages/workflow/workflow/src/invariant.ts"],
+      "@deepseek-ai/dsh-workflow-worker-thread": ["./packages/workflow/workflow-worker-thread/src"],
+      "@deepseek-ai/dsh-workflow-worker-thread/invariant": ["./packages/workflow/workflow-worker-thread/src/invariant.ts"],
+      "@deepseek-ai/dsh-workspace": ["./packages/workspace/workspace/src"],
+      "@deepseek-ai/dsh-workspace/invariant": ["./packages/workspace/workspace/src/invariant.ts"]
+      // END generated package aliases
+    }
+  }
+}
