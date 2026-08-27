@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-27-browser-auth-gated-privileged-page.md
-2026-08-27-browser-auth-gated-privileged-page.md: f06b0e09d754f957381a77b6e13dacee627446b3
-2026-08-27-browser-auth-gated-privileged-page.zh.md: cefada3deb786979559da616faa84681f93046ff
+2026-08-27-browser-auth-gated-privileged-page.md: d191a4db57c97ebd9052a27bde3da112515d99f3
+2026-08-27-browser-auth-gated-privileged-page.zh.md: c118681028cd93c5a7b9f4d0f5c67a8118aad6c4

@@ -14,7 +14,7 @@ The result was a deployment where the server trusts the session and the client r
 
 ## Decision
 
-The served index carries the Host's verdict to the page. `frontend-static` injects `globalThis.__DSH_PRIVILEGED_PAGE__ = true` alongside the existing `<base href>` row, and the connection client folds that global into `isLoopback`:
+The served index carries the Host's verdict to the page as a structured injection row. `frontend-static` contributes `globalThis.__DSH_PRIVILEGED_PAGE__ = true` through the `webserver/index-inject` table (rendered in the head, ahead of every document script), and the connection client folds that global into `isLoopback`:
 
 ```ts
 isLoopback: transport?.ownsHost === true || pageLocation === undefined

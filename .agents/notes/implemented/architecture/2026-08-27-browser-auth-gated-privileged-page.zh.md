@@ -14,7 +14,7 @@ Status: implemented
 
 ## Decision
 
-服务的 index 把 Host 的判定带给页面。`frontend-static` 在既有 `<base href>` 之外注入 `globalThis.__DSH_PRIVILEGED_PAGE__ = true`，连接客户端把这个全局并入 `isLoopback`：
+服务的 index 把 Host 的判定带给页面，作为一条结构化注入行。`frontend-static` 通过 `webserver/index-inject` 表贡献 `globalThis.__DSH_PRIVILEGED_PAGE__ = true`（渲染在 head 中、位于每个文档脚本之前），连接客户端把这个全局并入 `isLoopback`：
 
 ```ts
 isLoopback: transport?.ownsHost === true || pageLocation === undefined

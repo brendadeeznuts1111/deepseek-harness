@@ -149,6 +149,7 @@ describe('real Loader composition', () => {
       expect(got.status).toBe(200)
       expect(got.type).toBe('text/html; charset=utf-8')
       expect(got.body).toContain('__T__')
+      expect(got.body).toContain('__DSH_PRIVILEGED_PAGE__')
       expect(got.body).toContain('shell')
     }
     expect(await request(port, '/', authenticated({ method: 'HEAD' }))).toEqual({
