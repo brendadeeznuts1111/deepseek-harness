@@ -97,6 +97,11 @@ interface ClientTransportGlobal {
   __DSH_TRANSPORT__?: ClientTransportHooks
 }
 
+/** Host-injected page global marking a browser-auth-gated (privileged) page. */
+interface ClientPrivilegeGlobal {
+  __DSH_PRIVILEGED_PAGE__?: boolean
+}
+
 /**
  * The ctx.connection service API: the API client plus a one-shot controller
  * starter. API Gateway supplies generation readiness and reset callbacks;
@@ -142,6 +147,11 @@ interface ConnectionOwner {
  */
 export function apply(ctx: Context): void {
   const pageLocation = typeof location === 'undefined' ? undefined : location
+  // The served index injects this global only for browser-auth-gated pages
+  // (authorizeIndex runs before the HTML is served), so its presence means the
+  // Host vouches for this session — the /api fence already accepts it. Fork
+  // extension: upstream keeps the privileged client surface loopback-only.
+  const privilegedPage = (globalThis as ClientPrivilegeGlobal).__DSH_PRIVILEGED_PAGE__ === true
   const fixture = pageLocation !== undefined && new URLSearchParams(pageLocation.search).has('fixture')
   const fixtureRpc = fixture ? createFixtureConnectionRpc() : undefined
   const transport = (globalThis as ClientTransportGlobal).__DSH_TRANSPORT__
@@ -169,7 +179,8 @@ export function apply(ctx: Context): void {
     publishGeneration(undefined)
   }
   const handle: ConnectionHandle = {
-    isLoopback: transport?.ownsHost === true || pageLocation === undefined || isLoopbackHostname(pageLocation.hostname),
+    isLoopback: transport?.ownsHost === true || pageLocation === undefined || isLoopbackHostname(pageLocation.hostname)
+      || privilegedPage,
     generation: {
       getSnapshot: () => generation,
       subscribe: (listener) => {

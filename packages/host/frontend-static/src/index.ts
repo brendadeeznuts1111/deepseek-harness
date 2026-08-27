@@ -118,9 +118,16 @@ export function apply(ctx: Context, config: Config): void {
   // static directory; served pages also answer deep SPA-fallback paths, where
   // relative asset URLs would resolve under the request directory, so the
   // served form anchors them at the site root ahead of every URL-bearing tag.
+  // The privilege global is safe unconditionally here: index serving runs
+  // behind authorizeIndex, so only browser-auth-gated pages (or loopback)
+  // ever receive it. Fork extension — see the client connection's
+  // __DSH_PRIVILEGED_PAGE__ read.
   const renderIndex = async (): Promise<string> => {
     const body = ctx.webServer.renderIndex(await readFile(distIndex, 'utf8'))
-    return body.replace(/<head(?:\s[^>]*)?>/i, open => `${open}<base href="/">`)
+    return body.replace(
+      /<head(?:\s[^>]*)?>/i,
+      open => `${open}<base href="/"><script>globalThis.__DSH_PRIVILEGED_PAGE__ = true</script>`,
+    )
   }
   ctx.effect(() => ctx.webServer.registerFallback(async (req, res) => {
     // Non-GET/HEAD without a matching named route is 405 (fallback-only
