@@ -1,0 +1,7 @@
+# Opt-in Bun seam for a host composition. Does not grant privileged /api.
+# A patch replaces the whole row config; bun-local fails the load if bun is missing.
+- insert:
+    - id: bun-local
+      name: '@deepseek-ai/dsh-bun-local'
+    - id: tool-bun
+      name: '@deepseek-ai/dsh-tool-bun'
