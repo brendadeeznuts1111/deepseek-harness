@@ -567,6 +567,31 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'bun',
+    summary: 'Abstract Bun execution service.',
+    description: 'Abstract Bun execution service. Subclass, implement the abstract methods, and load the subclass as a plugin — it registers as `ctx.bun`.\n\nImplementations must honor these semantics:\n\n- run rejects only for infrastructure failures. Nonzero exits, timeout kills, and abort kills resolve with a BunRunResult.\n- start returns immediately; no timeout applies to background processes. `done` settles at process close and never rejects.\n- BunProcess.readOutput is incremental: consecutive reads never repeat output.',
+    methods: [
+      {
+        signature: 'abstract resolve(request: BunExecRequest): BunExecSpec',
+        description: 'Apply implementation-owned defaults and caps to a request before execution.',
+        parameters: [{ name: 'request', description: 'the caller\'s request; omitted fields get this implementation\'s defaults, capped fields are clamped.' }],
+        returns: 'the fully-specified spec to hand to {@link run}/{@link start}.',
+      },
+      {
+        signature: 'abstract run(spec: BunExecSpec): Promise<BunRunResult>',
+        description: 'Run Bun in the foreground; resolves when it finishes.',
+        parameters: [{ name: 'spec', description: 'a resolved spec from {@link resolve}, never a raw request.' }],
+        returns: 'the outcome; nonzero exits, timeout kills, and abort kills resolve with a descriptive result rather than reject.',
+      },
+      {
+        signature: 'abstract start(spec: BunExecSpec): BunProcess',
+        description: 'Start a background Bun process and return its handle immediately.',
+        parameters: [{ name: 'spec', description: 'a resolved spec from {@link resolve}, never a raw request.' }],
+        returns: 'the live process handle (reads, kill, quiescence promise).',
+      },
+    ],
+  },
+  {
     key: 'claudeCodeMods',
     summary: 'The bridge service: loaded mods, their hooks, and the harness listeners that raise their events.',
     description: 'The bridge service: loaded mods, their hooks, and the harness listeners that raise their events. Mods join through ClaudeCodeMods.add, which defineMod calls when a mod plugin mounts. The Remote methods let a Client draw each session\'s band above the prompt and press its buttons.',
@@ -5821,6 +5846,30 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export interface BundleRowInfo {\n    rowId: string;\n    moduleName: string;\n    meta?: PluginLocalizedMeta;\n    entryId?: PluginEntryId;\n}',
   },
   {
+    name: 'BunExecRequest',
+    declaration: 'export interface BunExecRequest {\n    args: readonly string[];\n    workdir?: string | undefined;\n    timeoutMs?: number | undefined;\n    stdoutMaxBytes?: number | undefined;\n    signal?: AbortSignal | undefined;\n    stdin?: string | undefined;\n    env?: Record<string, string> | undefined;\n    dshEnv?: DshEnvironment | undefined;\n}',
+  },
+  {
+    name: 'BunExecSpec',
+    declaration: 'export interface BunExecSpec {\n    args: readonly string[];\n    bunPath: string;\n    workdir: string;\n    timeoutMs: number;\n    stdoutMaxBytes: number;\n    signal?: AbortSignal | undefined;\n    stdin?: string | undefined;\n    env?: Record<string, string> | undefined;\n    dshEnv?: DshEnvironment | undefined;\n}',
+  },
+  {
+    name: 'BunProcess',
+    declaration: 'export interface BunProcess {\n    status: BunProcessStatus;\n    exitCode: number | null;\n    signal: NodeJS.Signals | null;\n    readonly done: Promise<void>;\n    readOutput(): BunProcessRead;\n    kill(): boolean;\n}',
+  },
+  {
+    name: 'BunProcessRead',
+    declaration: 'export interface BunProcessRead {\n    delta: string;\n    lossy: boolean;\n    stdoutSpillPath?: string;\n    stderrSpillPath?: string;\n}',
+  },
+  {
+    name: 'BunProcessStatus',
+    declaration: 'export type BunProcessStatus = \'running\' | \'completed\' | \'killed\';',
+  },
+  {
+    name: 'BunRunResult',
+    declaration: 'export interface BunRunResult {\n    exitCode: number | null;\n    signal: NodeJS.Signals | null;\n    timedOut: boolean;\n    aborted: boolean;\n    timeoutMs: number;\n    stdout: CollectedOutput;\n    stderr: CollectedOutput;\n}',
+  },
+  {
     name: 'ButtonProps',
     declaration: 'export interface ButtonProps {\n    readonly label: string;\n    readonly hotkey?: string | undefined;\n    readonly disabled?: boolean | undefined;\n    readonly onPress?: (() => unknown) | undefined;\n}',
   },
@@ -9985,20 +10034,20 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export interface ViewerPluginPolicy {\n    readonly plugin: string;\n    readonly mode: \'all\' | \'none\' | \'selected\';\n    readonly endpoints?: readonly string[];\n}',
   },
   {
-    name: 'WebBootBatch',
-    declaration: 'export interface WebBootBatch {\n    phase: WebBootBatchPhase;\n    url: string;\n    rev: string;\n    entries: string[];\n}',
-  },
-  {
-    name: 'WebBootBatchPhase',
-    declaration: 'export type WebBootBatchPhase = \'bootstrap\' | \'application\';',
-  },
-  {
     name: 'WeatherRequest',
     declaration: 'export interface WeatherRequest {\n    location: string;\n    signal?: AbortSignal;\n}',
   },
   {
     name: 'WeatherResult',
     declaration: 'export interface WeatherResult {\n    location: string;\n    temperatureC: number;\n    condition: string;\n}',
+  },
+  {
+    name: 'WebBootBatch',
+    declaration: 'export interface WebBootBatch {\n    phase: WebBootBatchPhase;\n    url: string;\n    rev: string;\n    entries: string[];\n}',
+  },
+  {
+    name: 'WebBootBatchPhase',
+    declaration: 'export type WebBootBatchPhase = \'bootstrap\' | \'application\';',
   },
   {
     name: 'WebBootEntry',

@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-08-17-bun-capability-seam.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-17-bun-capability-seam.md
+/agent-note-bun-is-its-own-ctx-bun-capability-seam:
+  en: 855ad6231b4cc1d0
+  zh: ea8d71f3631f4483
+/agent-note-bun-is-its-own-ctx-bun-capability-seam/problem:
+  en: de961e301c2ec049
+  zh: a457addef0b0b234
+/agent-note-bun-is-its-own-ctx-bun-capability-seam/decision:
+  en: 19fff52e87bf4987
+  zh: 62f08c8291af7282
+/agent-note-bun-is-its-own-ctx-bun-capability-seam/alternatives-considered:
+  en: 750b38f03bbb889f
+  zh: 716c5eba27bad590
+/agent-note-bun-is-its-own-ctx-bun-capability-seam/consequences:
+  en: a0b6d73090804bc9
+  zh: f1effc0ddca53d25

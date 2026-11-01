@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for bun.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/subsystems/bun.md
+/bun-executor:
+  en: e0f7e972b5b7d6ea
+  zh: dc2236669a593bdf
+/bun-executor/request-vs-spec-the-resolve-split:
+  en: c3c384ec1a860116
+  zh: 10edf2102e08c49d
+/bun-executor/foreground-runs-bunrunresult:
+  en: 7f4872ed965e3387
+  zh: 839d2a476a8687f5
+/bun-executor/background-processes-bunprocess:
+  en: 08ac0bfbc58b6bc2
+  zh: 74c6d91ba978c17e
+/bun-executor/the-service:
+  en: 03f6763a3f678fe4
+  zh: b941a4019c11716d

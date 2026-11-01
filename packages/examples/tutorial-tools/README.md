@@ -1,8 +1,27 @@
+---
+description: "The finished tools from the Cordis first-plugin tutorial as an installable capability seam: a ctx.weather Service Definition, a deterministic local provider and a live HTTP provider, and the greet/wea"
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-tutorial-tools
 
 English | [中文](README.zh.md)
 
-The finished tools from the [Cordis first-plugin tutorial](../../../docs/cordis-tutorial/index.md) as an installable capability seam: a `ctx.weather` Service Definition, a deterministic local provider and a live HTTP provider, and the `greet`/`weather` tool consumers that expose the capability to the model. The Web UI ships it as the `tutorial` agent preset.
+## Summary
+
+The finished tools from the Cordis first-plugin tutorial as an installable capability seam: a ctx.weather Service Definition, a deterministic local provider and a live HTTP provider, and the greet/weather tool consumers that expose the capability to the model. The Web UI ships it as the tutorial agent preset.
+
+## Table of Contents
+
+- [The weather capability seam](#the-weather-capability-seam)
+- [Config](#config)
+- [Usage](#usage)
+- [Model Experience](#model-experience)
+- [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
+
+-----
+
 
 ## The weather capability seam
 
@@ -98,3 +117,7 @@ The tool definition is static and prefix-stable; a successful call's result text
 - **The live provider is single-endpoint** — `weather-web` speaks one `{ temperatureC, condition }` contract and does no geocoding or multi-source fallback; deployments point `apiUrl` at a service that speaks it.
 - **Memory is optional by design** — without a composed `ctx.storage`, `greet` runs stateless and cannot recall the last greeter.
 - **Tutorial scope** — the package is a teaching artifact: no rate limiting, caching, or provider fleet behind `ctx.weather`.
+
+### Dev Note
+
+Tutorial package for the capability-pattern walkthrough; see [docs/subsystems/tutorial.md](../../../docs/subsystems/tutorial.md) and the [tutorial](../../../docs/cordis-tutorial/index.md).

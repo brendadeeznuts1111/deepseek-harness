@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/bun/README.md
+/:
+  en: e84ca68cfb6c70ff
+  zh: 005b5673d11f30aa
+/bun-bun-capability-family:
+  en: 9b8fff9408e028c1
+  zh: 584da0203e2481e5
+/bun-bun-capability-family/summary:
+  en: 18f73fc0159e589f
+  zh: 1044e80724135493
+/bun-bun-capability-family/packages:
+  en: 12b4ff8ea13231a1
+  zh: 812d20ac89b97832
+/bun-bun-capability-family/packages/dev-note:
+  en: c62f4e76a7b42a29
+  zh: a8783775a71b4147

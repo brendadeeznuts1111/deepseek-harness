@@ -46,6 +46,13 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@deepseek-ai/dsh-browser-use` | no | Exclusive named browser-use provider registration |
 
+## bun
+
+| Package | Config | Description |
+|---|---|---|
+| `@deepseek-ai/dsh-bun-local` | yes | Local-subprocess implementation of the DeepSeek Harness Bun executor seam |
+| `@deepseek-ai/dsh-tool-bun` | yes | Model-facing bun tool with optional generic background-job support |
+
 ## bundle
 
 | Package | Config | Description |

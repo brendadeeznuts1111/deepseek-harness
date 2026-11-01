@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-14-tutorial-tools-seam-package-and-preset.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-14-tutorial-tools-seam-package-and-preset.md
-2026-08-14-tutorial-tools-seam-package-and-preset.md: 9c24ccf26aadfc7e00d293c06be4204d88258446
-2026-08-14-tutorial-tools-seam-package-and-preset.zh.md: 16fd61aad5cb5ccb3498d6c98f20c234c1d52843
+/agent-note-tutorial-tools-as-a-weather-capability-seam-package-and-preset:
+  en: 346010b91c20c705
+  zh: 3d66df0be3a16372
+/agent-note-tutorial-tools-as-a-weather-capability-seam-package-and-preset/problem:
+  en: 24a025dbae6f69b5
+  zh: b1feb96266ca8e2e
+/agent-note-tutorial-tools-as-a-weather-capability-seam-package-and-preset/decision:
+  en: 240c684b90dc27c0
+  zh: 668326a954c763da
+/agent-note-tutorial-tools-as-a-weather-capability-seam-package-and-preset/alternatives-considered:
+  en: 0d410540f2723e94
+  zh: 97eae01a6cfd07cd
+/agent-note-tutorial-tools-as-a-weather-capability-seam-package-and-preset/consequences:
+  en: 137941d2ef1a5dfb
+  zh: 6a5ae4ea6e03ac0d

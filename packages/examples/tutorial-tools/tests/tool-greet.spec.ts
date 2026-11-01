@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { Context, Service } from '@deepseek-ai/cordis'
+import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import ToolRuntime, { type ToolResult } from '@deepseek-ai/dsh-tools'
-import { CallId, type GenerateOptions, type StreamChunk } from '@deepseek-ai/dsh-llm'
+import { ToolCallId, type GenerateOptions, type StreamChunk } from '@deepseek-ai/dsh-llm'
 import Storage from '@deepseek-ai/dsh-storage'
 import * as JsonStorage from '@deepseek-ai/dsh-storage-json'
 import * as StorageDomain from '@deepseek-ai/dsh-storage-domain'
@@ -82,8 +83,8 @@ async function harness(options: HarnessOptions = {}) {
 }
 
 async function runGreet(ctx: Context, args: Record<string, unknown>, agent?: { provider?: string; model?: string }): Promise<ToolResult> {
-  return ctx.tools.execute({
-    callId: CallId('greet-test'),
+  return executeToolFixture(ctx, {
+    callId: ToolCallId('greet-test'),
     name: 'greet',
     arguments: args,
     signal: new AbortController().signal,

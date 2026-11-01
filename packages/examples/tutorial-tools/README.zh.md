@@ -1,12 +1,32 @@
+---
+description: "Cordis 首个插件教程 的成品工具，以可安装的能力缝（capability seam）形式呈现：一个 ctx.weather Service Definition、一个确定性的本地 provider、一个实时 HTTP provider，以及把该能力暴露给模型的 greet/weather 工具消费方。Web UI 将其作为 tutorial agent preset 内置。"
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-tutorial-tools
 
 [English](README.md) | 中文
 
-[Cordis 首个插件教程](../../../docs/cordis-tutorial/index.md) 的成品工具，以可安装的能力缝（capability seam）形式呈现：一个 `ctx.weather` Service Definition、一个确定性的本地 provider、一个实时 HTTP provider，以及把该能力暴露给模型的 `greet`/`weather` 工具消费方。Web UI 将其作为 `tutorial` agent preset 内置。
+## 概述
 
+Cordis 首个插件教程 的成品工具，以可安装的能力缝（capability seam）形式呈现：一个 ctx.weather Service Definition、一个确定性的本地 provider、一个实时 HTTP provider，以及把该能力暴露给模型的 greet/weather 工具消费方。Web UI 将其作为 tutorial agent preset 内置。
+
+## 目录
+
+- [weather 能力缝](#the-weather-capability-seam)
+- [配置](#config)
+- [用法](#usage)
+- [模型体验](#model-experience)
+- [已知限制与待办](#known-limitations-and-deferred-work)
+- [开发备注](#dev-note)
+
+-----
+
+
+<a id="the-weather-capability-seam"></a>
 ## weather 能力缝
 
-一个能力、三个角色（[能力缝](../../../docs/architecture.md#capability-seams)）：
+一个能力、三个角色（[能力缝](../../../docs/architecture.zh.md#capability-seams)）：
 
 - **`WeatherService`**（默认导出，包根路径）——Service Definition：`ctx.weather.get({ location, signal })` 解析为 `{ location, temperatureC, condition }`。实现方会 trim 地点并拒绝空地点；一次成功的查询总是解析出完整结果。
 - **`weather-local`** —— 确定性 provider：按小写地点名键控的 `overrides`，外加 `defaultTemperatureC`/`defaultCondition` 回退。
@@ -17,6 +37,7 @@
 - **`tool-weather`** —— 基于 `ctx.weather` 的模型可见 `weather` 工具：结构化规范值、可重放的 `presentationMeta`、通用待处理/完成卡片。
 - **`tool-greet`** —— 有状态的 `greet` 工具：模型生成问候语、通过该缝点缀天气、并通过 `tutorial_greet` 的 `ctx.storage` domain 实现持久记忆（上次被问候的人、每个人的上次所在地）。
 
+<a id="config"></a>
 ## 配置
 
 | 子路径 | 字段 | 默认值 | 含义 |
@@ -29,6 +50,7 @@
 | `tool-greet` | `maxWords` | `20` | 模型生成的问候语不得超过的字数预算 |
 | `tool-greet` | `fallbackGreeting` | `'Hello, {name}!'` | 模型调用失败或没有产出时的回退模板；`{name}` 会被替换为对方的名字 |
 
+<a id="usage"></a>
 ## 用法
 
 在 Web UI 中选择 `tutorial` agent preset，或在组合中挂载这些行：
@@ -57,6 +79,7 @@
 
 服务行位于 `isolate` realm 内，因为 preset 每进程只挂载一次，其消费方必须解析到同一实例。把 `weather-local` 换成 `weather-web` 即可提供实时数据；消费方无需任何改动。
 
+<a id="model-experience"></a>
 ## 模型体验
 
 ### greet 工具
@@ -93,8 +116,14 @@ Greet someone by name with a warm, model-generated message, optionally folding i
 
 工具定义是静态、前缀稳定的；成功调用的结果文本为追加式。
 
+<a id="known-limitations-and-deferred-work"></a>
 ## 已知限制与待办
 
 - **实时 provider 是单端点的** —— `weather-web` 只说一种 `{ temperatureC, condition }` 契约，不做地理编码或多源回退；部署方需把 `apiUrl` 指向能说该契约的服务。
 - **记忆按设计为可选** —— 没有组合 `ctx.storage` 时，`greet` 以无状态运行，无法回忆上次被问候的人。
 - **教程范围** —— 该包是教学制品：`ctx.weather` 背后没有限流、缓存或 provider 舰队。
+
+<a id="dev-note"></a>
+### 开发备注
+
+能力模式教程包；见 [docs/subsystems/tutorial.zh.md](../../../docs/subsystems/tutorial.zh.md) 与[教程](../../../docs/cordis-tutorial/index.zh.md)。

@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@deepseek-ai/cordis'
+import { executeToolFixture } from '@deepseek-ai/dsh-tool-testkit'
 import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 import ToolRuntime from '@deepseek-ai/dsh-tools'
-import { CallId } from '@deepseek-ai/dsh-llm'
+import { ToolCallId } from '@deepseek-ai/dsh-llm'
 import LocalWeatherService from '../src/weather-local.ts'
 import * as ToolWeather from '../src/tool-weather.ts'
 
@@ -20,8 +21,8 @@ const signal = new AbortController().signal
 describe('tool-weather consumer', () => {
   it('registers the weather tool and executes through the registry', async () => {
     const ctx = await harness()
-    const result = await ctx.tools.execute({
-      callId: CallId('tw-1'),
+    const result = await executeToolFixture(ctx, {
+      callId: ToolCallId('tw-1'),
       name: 'weather',
       arguments: { location: 'London' },
       signal,
@@ -34,8 +35,8 @@ describe('tool-weather consumer', () => {
 
   it('hand-checks an empty location as an error result', async () => {
     const ctx = await harness()
-    const result = await ctx.tools.execute({
-      callId: CallId('tw-2'),
+    const result = await executeToolFixture(ctx, {
+      callId: ToolCallId('tw-2'),
       name: 'weather',
       arguments: { location: '   ' },
       signal,

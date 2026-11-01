@@ -22,6 +22,7 @@ packages/    @deepseek-ai/dsh-<pkg> workspaces at packages/<group>/<pkg>/
   typert/               type graphs
   llm/                  model providers
   shell/                command execution
+  bun/         Bun capability: Service Definition + provider + tool Consumer
   subprocess/           child-process management
   ssh/                  SSH execution providers
   terminal/             persistent terminals

@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/examples/tutorial-tools/README.md
-README.md: 5b3a0fce43e3281807b443c3825c6719a26f5174
-README.zh.md: d8dd65c3d433d9ba72cdf54df5ea838401234551
+/:
+  en: 049620e92c18c077
+  zh: 7ce1f973dec14195
+/deepseek-ai-dsh-tutorial-tools:
+  en: 11f7a70f3fa47d1f
+  zh: a9154a7572a5a7e8
+/deepseek-ai-dsh-tutorial-tools/summary:
+  en: ee23f50fc2fd9025
+  zh: 879373bae1f4dd35
+/deepseek-ai-dsh-tutorial-tools/table-of-contents:
+  en: 05e3fc331fcc5108
+  zh: 4694cb2c15bf8fde
+/deepseek-ai-dsh-tutorial-tools/the-weather-capability-seam:
+  en: 444d8d87a0320c9d
+  zh: 29ae94a87032a745
+/deepseek-ai-dsh-tutorial-tools/config:
+  en: a3f9fdb3291b2e68
+  zh: a2b167aa580ffed9
+/deepseek-ai-dsh-tutorial-tools/usage:
+  en: 33d77bfc8cbfcb23
+  zh: 247ec71071074f0a
+/deepseek-ai-dsh-tutorial-tools/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/deepseek-ai-dsh-tutorial-tools/model-experience/greet-tool:
+  en: d071f75fbf8ea50d
+  zh: 432bd05700aca842
+/deepseek-ai-dsh-tutorial-tools/model-experience/greet-tool/what-the-model-sees:
+  en: 713c50b9b7dd19aa
+  zh: b462edd923d4eeaa
+/deepseek-ai-dsh-tutorial-tools/model-experience/greet-tool/what-the-model-sees/verbatim-text-for-this-field:
+  en: f310d13f2c5a4d6a
+  zh: 602c9de780dffcb0
+/deepseek-ai-dsh-tutorial-tools/model-experience/greet-tool/token-effect:
+  en: a69ea53efc253eb9
+  zh: fd839a4dd522075f
+/deepseek-ai-dsh-tutorial-tools/model-experience/greet-tool/kv-cache-effect:
+  en: 21b99cb329663afd
+  zh: 2186852d11e909d8
+/deepseek-ai-dsh-tutorial-tools/model-experience/weather-tool:
+  en: f64ba1ee5eb85be7
+  zh: 1eb127ced78decf5
+/deepseek-ai-dsh-tutorial-tools/model-experience/weather-tool/what-the-model-sees:
+  en: 17a424a8692f3617
+  zh: dec3328a419e19d7
+/deepseek-ai-dsh-tutorial-tools/model-experience/weather-tool/token-effect:
+  en: c866cd8cee1a69e4
+  zh: 78d3226fcbaee9b5
+/deepseek-ai-dsh-tutorial-tools/model-experience/weather-tool/kv-cache-effect:
+  en: 25874a5e649f34ed
+  zh: 5a23b75892192e9e
+/deepseek-ai-dsh-tutorial-tools/known-limitations-and-deferred-work:
+  en: f82ac2574c159dfe
+  zh: a526e94660c914fa
+/deepseek-ai-dsh-tutorial-tools/known-limitations-and-deferred-work/dev-note:
+  en: b3eb4db05b8910ff
+  zh: 7cf4e4d6369975a4

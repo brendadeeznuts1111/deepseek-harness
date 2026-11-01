@@ -31,9 +31,6 @@
     },
     {
       "path": "../../storage/storage-json"
-    },
-    {
-      "path": "../../runtime-diagnostics/invariants"
     }
   ]
 }
