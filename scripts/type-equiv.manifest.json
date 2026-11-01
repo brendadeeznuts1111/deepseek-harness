@@ -926,6 +926,31 @@
       "source": "packages/shell/shell/src/types.ts"
     },
     {
+      "doc": "docs/subsystems/bun.md",
+      "symbol": "BunExecRequest",
+      "source": "packages/bun/bun/src/types.ts"
+    },
+    {
+      "doc": "docs/subsystems/bun.md",
+      "symbol": "BunExecSpec",
+      "source": "packages/bun/bun/src/types.ts"
+    },
+    {
+      "doc": "docs/subsystems/bun.md",
+      "symbol": "BunRunResult",
+      "source": "packages/bun/bun/src/types.ts"
+    },
+    {
+      "doc": "docs/subsystems/bun.md",
+      "symbol": "BunProcess",
+      "source": "packages/bun/bun/src/types.ts"
+    },
+    {
+      "doc": "docs/subsystems/bun.md",
+      "symbol": "BunProcessRead",
+      "source": "packages/bun/bun/src/types.ts"
+    },
+    {
       "doc": "docs/subsystems/jobs.md",
       "symbol": "JobKindMap",
       "source": "packages/jobs/jobs/src/types.ts"

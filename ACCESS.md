@@ -12,11 +12,11 @@ The public hostname is a Cloudflare Tunnel to `dsh web` on this machine (`127.0.
 ## Start
 
 ```sh
-pnpm dsh --patch local-access.overlay.yml web --trusted-host dsh.misson-control.com
+pnpm dsh web --patch local-access.overlay.yml --trusted-host dsh.misson-control.com
 cloudflared --config ~/.cloudflared/config-dsh.yml tunnel run dsh-web
 ```
 
-`--patch` must precede `web`: it is a launcher flag. `--trusted-host dsh.misson-control.com` is required so the `/api` browser-trust fence accepts the public origin. The shipped connection row keeps `allowPrivilegedOnTrustedHosts` false; only this overlay turns it on.
+`--patch` belongs after `web`: the `web` alias owns that repeatable overlay flag. `--trusted-host dsh.misson-control.com` is required so the `/api` browser-trust fence accepts the public origin. The shipped connection row keeps `allowPrivilegedOnTrustedHosts` false; only this overlay turns it on. Opt-in Bun uses a separate `bun.overlay.yml` and must not be folded into this grant.
 
 ## Control
 
