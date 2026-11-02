@@ -543,6 +543,31 @@ export const SERVICE_API: readonly ServiceApiEntry[] = [
     ],
   },
   {
+    key: 'bun',
+    summary: 'Abstract Bun execution service.',
+    description: 'Abstract Bun execution service. Subclass, implement the abstract methods, and load the subclass as a plugin — it registers as `ctx.bun`.\n\nImplementations must honor these semantics:\n\n- run rejects only for infrastructure failures. Nonzero exits, timeout kills, and abort kills resolve with a BunRunResult.\n- start returns immediately; no timeout applies to background processes. `done` settles at process close and never rejects.\n- BunProcess.readOutput is incremental: consecutive reads never repeat output.',
+    methods: [
+      {
+        signature: 'abstract resolve(request: BunExecRequest): BunExecSpec',
+        description: 'Apply implementation-owned defaults and caps to a request before execution.',
+        parameters: [{ name: 'request', description: 'the caller\'s request; omitted fields get this implementation\'s defaults, capped fields are clamped.' }],
+        returns: 'the fully-specified spec to hand to {@link run}/{@link start}.',
+      },
+      {
+        signature: 'abstract run(spec: BunExecSpec): Promise<BunRunResult>',
+        description: 'Run Bun in the foreground; resolves when it finishes.',
+        parameters: [{ name: 'spec', description: 'a resolved spec from {@link resolve}, never a raw request.' }],
+        returns: 'the outcome; nonzero exits, timeout kills, and abort kills resolve with a descriptive result rather than reject.',
+      },
+      {
+        signature: 'abstract start(spec: BunExecSpec): BunProcess',
+        description: 'Start a background Bun process and return its handle immediately.',
+        parameters: [{ name: 'spec', description: 'a resolved spec from {@link resolve}, never a raw request.' }],
+        returns: 'the live process handle (reads, kill, quiescence promise).',
+      },
+    ],
+  },
+  {
     key: 'clientModules',
     summary: 'The web plugin table service: incremental `dsh.client` scan + wire composition + bundle route + index injection rows.',
     description: 'The web plugin table service: incremental `dsh.client` scan + wire composition + bundle route + index injection rows. Construction runs the activation scan synchronously — a malformed declaration or missing bundle among the already-loaded entries aggregates into one loud throw (FAILED fiber; the boot activation audit reports it).',
@@ -3604,6 +3629,30 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export type Branded<B extends string> = string & {\n    readonly [BRAND]: B;\n};',
   },
   {
+    name: 'BunExecRequest',
+    declaration: 'export interface BunExecRequest {\n    args: readonly string[];\n    workdir?: string | undefined;\n    timeoutMs?: number | undefined;\n    stdoutMaxBytes?: number | undefined;\n    signal?: AbortSignal | undefined;\n    stdin?: string | undefined;\n    env?: Record<string, string> | undefined;\n    dshEnv?: DshEnvironment | undefined;\n}',
+  },
+  {
+    name: 'BunExecSpec',
+    declaration: 'export interface BunExecSpec {\n    args: readonly string[];\n    bunPath: string;\n    workdir: string;\n    timeoutMs: number;\n    stdoutMaxBytes: number;\n    signal?: AbortSignal | undefined;\n    stdin?: string | undefined;\n    env?: Record<string, string> | undefined;\n    dshEnv?: DshEnvironment | undefined;\n}',
+  },
+  {
+    name: 'BunProcess',
+    declaration: 'export interface BunProcess {\n    status: BunProcessStatus;\n    exitCode: number | null;\n    signal: NodeJS.Signals | null;\n    readonly done: Promise<void>;\n    readOutput(): BunProcessRead;\n    kill(): boolean;\n}',
+  },
+  {
+    name: 'BunProcessRead',
+    declaration: 'export interface BunProcessRead {\n    delta: string;\n    lossy: boolean;\n    stdoutSpillPath?: string;\n    stderrSpillPath?: string;\n}',
+  },
+  {
+    name: 'BunProcessStatus',
+    declaration: 'export type BunProcessStatus = \'running\' | \'completed\' | \'killed\';',
+  },
+  {
+    name: 'BunRunResult',
+    declaration: 'export interface BunRunResult {\n    exitCode: number | null;\n    signal: NodeJS.Signals | null;\n    timedOut: boolean;\n    aborted: boolean;\n    timeoutMs: number;\n    stdout: CollectedOutput;\n    stderr: CollectedOutput;\n}',
+  },
+  {
     name: 'ChunkRowEvent',
     declaration: 'export type ChunkRowEvent = {\n    [Kind in ChunkRow[\'type\']]: {\n        readonly type: `chunkrow/${Kind}`;\n        readonly seq: number;\n        readonly time: number;\n        readonly data: Extract<ChunkRow, {\n            readonly type: Kind;\n        }>[\'data\'];\n    };\n}[ChunkRow[\'type\']];',
   },
@@ -5904,20 +5953,20 @@ export const TYPE_API: readonly TypeApiEntry[] = [
     declaration: 'export interface VerifiedWebhookDelivery<K extends string = string> {\n    readonly kind: K;\n    readonly source: WebhookSourceId;\n    readonly deliveryId: WebhookDeliveryId;\n    readonly event: WebhookEventOf<K>;\n    readonly receivedAt: number;\n}',
   },
   {
-    name: 'WebBootBatch',
-    declaration: 'export interface WebBootBatch {\n    phase: WebBootBatchPhase;\n    url: string;\n    rev: string;\n    entries: string[];\n}',
-  },
-  {
-    name: 'WebBootBatchPhase',
-    declaration: 'export type WebBootBatchPhase = \'bootstrap\' | \'application\';',
-  },
-  {
     name: 'WeatherRequest',
     declaration: 'export interface WeatherRequest {\n    location: string;\n    signal?: AbortSignal;\n}',
   },
   {
     name: 'WeatherResult',
     declaration: 'export interface WeatherResult {\n    location: string;\n    temperatureC: number;\n    condition: string;\n}',
+  },
+  {
+    name: 'WebBootBatch',
+    declaration: 'export interface WebBootBatch {\n    phase: WebBootBatchPhase;\n    url: string;\n    rev: string;\n    entries: string[];\n}',
+  },
+  {
+    name: 'WebBootBatchPhase',
+    declaration: 'export type WebBootBatchPhase = \'bootstrap\' | \'application\';',
   },
   {
     name: 'WebBootEntry',

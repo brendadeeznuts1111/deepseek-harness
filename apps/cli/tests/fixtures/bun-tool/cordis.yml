@@ -1,0 +1,10 @@
+- id: session-telemetry-otel
+  disabled: true
+
+- insert:
+    - id: bun-local
+      name: '@deepseek-ai/dsh-bun-local'
+      config:
+        bunPath: !!js process.execPath
+    - id: tool-bun
+      name: '@deepseek-ai/dsh-tool-bun'

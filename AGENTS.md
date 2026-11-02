@@ -19,6 +19,7 @@ packages/    @deepseek-ai/dsh-<pkg> workspaces at packages/<group>/<pkg>/
   llm/         LLM capability: Service Definition/Consumer + DeepSeek providers
   e2b/         E2B POC: sandbox + FS/subprocess adapters
   shell/        bash capability: Service Definition + local/pwsh providers + shell Consumers
+  bun/         Bun capability: Service Definition + local provider + tool Consumer
   subprocess/  subprocess capability + local process-tree provider + shared Win32 library
   terminal/         persistent sessions
   fs/          filesystem capability + policy

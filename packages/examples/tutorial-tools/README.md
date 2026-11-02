@@ -1,9 +1,28 @@
+---
+description: "The finished tools from the Cordis first-plugin tutorial as an installable weather capability seam, for users and maintainers of the tutorial preset."
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-tutorial-tools
 
 English | [中文](README.zh.md)
+## Summary
+
+`dsh-tutorial-tools` packages the finished tools from the Cordis first-plugin tutorial as an installable capability seam: a `ctx.weather` Service Definition, a deterministic local provider, a live HTTP provider, and the `greet`/`weather` tool consumers built over the seam. The Web UI ships it as the `tutorial` agent preset.
+
+## Table of Contents
+
+- [The weather capability seam](#the-weather-capability-seam)
+- [Config](#config)
+- [Usage](#usage)
+- [Model Experience](#model-experience)
+- [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
+
 
 The finished tools from the [Cordis first-plugin tutorial](../../../docs/cordis-tutorial/index.md) as an installable capability seam: a `ctx.weather` Service Definition, a deterministic local provider and a live HTTP provider, and the `greet`/`weather` tool consumers that expose the capability to the model. The Web UI ships it as the `tutorial` agent preset.
 
+<a id="the-weather-capability-seam"></a>
 ## The weather capability seam
 
 One capability, three roles ([capability seams](../../../docs/architecture.md#capability-seams)):
@@ -17,6 +36,7 @@ Consumers:
 - **`tool-weather`** — the model-facing `weather` tool over `ctx.weather`: structured canonical value, replayable `presentationMeta`, and generic pending/completed cards.
 - **`tool-greet`** — the stateful `greet` tool: model-generated greeting, optional weather flavoring through the seam, and durable memory via a `tutorial_greet` `ctx.storage` domain (last greeter, per-person location).
 
+<a id="config"></a>
 ## Config
 
 | Subpath | Field | Default | Meaning |
@@ -29,6 +49,7 @@ Consumers:
 | `tool-greet` | `maxWords` | `20` | Word budget the model-generated greeting must stay under |
 | `tool-greet` | `fallbackGreeting` | `'Hello, {name}!'` | Fallback template when the model call fails or yields nothing; `{name}` is replaced with the person's name |
 
+<a id="usage"></a>
 ## Usage
 
 Select the `tutorial` agent preset in the Web UI, or mount the rows in a composition:
@@ -57,6 +78,7 @@ Select the `tutorial` agent preset in the Web UI, or mount the rows in a composi
 
 The service row sits inside an `isolate` realm because a preset mounts once per process and its consumers must resolve the same instance. Swap `weather-local` for `weather-web` to serve live data; the consumers change nothing.
 
+<a id="model-experience"></a>
 ## Model Experience
 
 ### greet tool
@@ -95,6 +117,18 @@ The tool definition is static and prefix-stable; a successful call's result text
 
 ## Known Limitations and Deferred Work
 
+<a id="known-limitations-and-deferred-work"></a>
+
 - **The live provider is single-endpoint** — `weather-web` speaks one `{ temperatureC, condition }` contract and does no geocoding or multi-source fallback; deployments point `apiUrl` at a service that speaks it.
 - **Memory is optional by design** — without a composed `ctx.storage`, `greet` runs stateless and cannot recall the last greeter.
 - **Tutorial scope** — the package is a teaching artifact: no rate limiting, caching, or provider fleet behind `ctx.weather`.
+
+<a id="dev-note"></a>
+### Dev Note
+
+<details>
+<summary>Working context for maintainers — click to expand</summary>
+
+None.
+
+</details>
