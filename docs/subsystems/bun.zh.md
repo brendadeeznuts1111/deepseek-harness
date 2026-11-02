@@ -2,7 +2,7 @@
 
 [English](bun.md) | 中文
 
-Bun 执行 seam 拆分为 Service Definition（[dsh-bun](../../packages/bun/bun)，`ctx.bun`）、Service Provider（[dsh-bun-local](../../packages/bun/bun-local)）与 Consumer（[dsh-tool-bun](../../packages/bun/tool-bun)，`bun` schema）。通用后台任务 id、所有权与控制见 [jobs.md](jobs.md)；此 seam 返回无任务身份的进程句柄。原始进程组机制位于 [subprocess seam](subprocess.md) 之后。该家族是可选接入，不替换 [bash](shell.md) 或 [code-runtime](code-runtime.md)。
+Bun 执行 seam 拆分为 Service Definition（[dsh-bun](../../packages/bun/bun)，`ctx.bun`）、Service Provider（[dsh-bun-local](../../packages/bun/bun-local)）与 Consumer（[dsh-tool-bun](../../packages/bun/tool-bun)，`bun` schema）。通用后台任务 id、所有权与控制见 [jobs.md](jobs.zh.md)；此 seam 返回无任务身份的进程句柄。原始进程组机制位于 [subprocess seam](subprocess.zh.md) 之后。该家族是可选接入，不替换 [bash](shell.zh.md) 或 [code-runtime](code-runtime.zh.md)。
 
 源：[`packages/bun/bun/src/types.ts`](../../packages/bun/bun/src/types.ts)
 
@@ -88,7 +88,7 @@ interface BunRunResult {
 }
 ```
 
-每个流都是 [subprocess seam](subprocess.md) 拥有、并由 `dsh-bun` 再导出的 `CollectedOutput`。
+每个流都是 [subprocess seam](subprocess.zh.md) 拥有、并由 `dsh-bun` 再导出的 `CollectedOutput`。
 
 ## 后台进程：`BunProcess`
 
@@ -126,7 +126,7 @@ interface BunProcessRead {
 
 ## 服务
 
-`BunExecutor` 拥有 `resolve`、前台 `run` 与后台进程 `start`。`dsh-bun-local` 拥有 argv 默认值、超时/中止分类、终端环境和后台读取合并。`dsh-tool-bun` 拥有面向模型的渲染，并把后台句柄适配进[通用 job 运行时](jobs.md)。
+`BunExecutor` 拥有 `resolve`、前台 `run` 与后台进程 `start`。`dsh-bun-local` 拥有 argv 默认值、超时/中止分类、终端环境和后台读取合并。`dsh-tool-bun` 拥有面向模型的渲染，并把后台句柄适配进[通用 job 运行时](jobs.zh.md)。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

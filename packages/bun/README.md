@@ -1,3 +1,8 @@
+---
+description: "The Bun capability family for deployments and maintainers choosing and composing the Bun executor seam, its local Service Provider, and the model-facing bun tool."
+kind: "package-group"
+---
+
 # bun/ — Bun capability family
 
 English | [中文](README.zh.md)

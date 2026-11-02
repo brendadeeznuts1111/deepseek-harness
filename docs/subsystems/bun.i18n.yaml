@@ -3,4 +3,4 @@
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/bun.md
 bun.md: ccb3f2a12d74ba19ab4122dd6f6a53812ad02e35
-bun.zh.md: 2eb4dda8b84c658b06a441598f4e456c1d3aa441
+bun.zh.md: 9e1705737d07cacdc506946479509f3d8300dae2

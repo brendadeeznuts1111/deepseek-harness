@@ -1,6 +1,23 @@
+---
+description: "The model-facing bun tool for users and maintainers choosing, configuring, or debugging Bun invocation, background jobs, and result rendering."
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-tool-bun
 
 English | [中文](README.zh.md)
+## Summary
+
+`dsh-tool-bun` exposes the Bun executor seam to the model as the `bun` tool: run a foreground invocation and read its bounded output, or start a background process controlled through the generic jobs tools. It requires a mounted executor Service Provider and the shell-environment registry, and it owns every model-visible rendering detail, including tool schemas and the `[exit code: N]` marker.
+
+## Table of Contents
+
+- [Tools](#tools)
+- [UI presentation](#ui-presentation)
+- [Model Experience](#model-experience)
+- [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
+
 
 The model-facing `bun` tool registered over the `ctx.bun` executor seam. Foreground execution stays behind that seam; a background process handle is registered with the generic `ctx.jobs` runtime and controlled through `job_output`, `job_list`, and `job_kill` from `@deepseek-ai/dsh-tool-jobs`.
 
@@ -10,6 +27,7 @@ The package root exposes only the Cordis plugin contract (`name`, `inject`, `Con
 
 The plugin also contributes the `tool:bun` prompt section (order 106): check the `[exit code: N]` marker on every result and pass `args` as a list, not a shell string.
 
+<a id="tools"></a>
 ## Tools
 
 ### `bun`
@@ -28,10 +46,12 @@ Result text contains stdout, an optional `[stderr]` section, then applicable tim
 
 When `run_in_background` is true, this plugin registers the calling agent as owner and adapts the returned `BunProcess` handle into generic cancel/done/incremental-output hooks. `enableRunInBackground: false` removes the parameter and rejects a forced background call at execution time.
 
+<a id="ui-presentation"></a>
 ## UI presentation
 
 A foreground call is a terminal card carrying argv, description, cwd, output, and parsed exit status. A background start is a generic execute card because it returns only a job id. These presenters are pure and replay-safe.
 
+<a id="model-experience"></a>
 ## Model Experience
 
 ### System prompt
@@ -112,6 +132,18 @@ Append-only.
 
 ## Known Limitations and Deferred Work
 
+<a id="known-limitations-and-deferred-work"></a>
+
 - **Replay exit pills parse from result text** — the same residual as `dsh-tool-bash`.
 - **No sandbox escalation fields** — this cut has no sandboxing executor.
 - **Background processes have no executor timeout** — callers must use `job_kill` when work no longer matters.
+
+<a id="dev-note"></a>
+### Dev Note
+
+<details>
+<summary>Working context for maintainers — click to expand</summary>
+
+None.
+
+</details>

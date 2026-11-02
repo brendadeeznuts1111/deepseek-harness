@@ -1,15 +1,33 @@
+---
+description: "面向模型的 bun 工具，供选择、配置或排查 Bun 调用、后台任务与结果渲染的使用者与维护者阅读。"
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-tool-bun
 
 [English](README.md) | 中文
+## 概述
+
+`dsh-tool-bun` 把 Bun 执行器 seam 以 `bun` 工具的形式暴露给模型：运行前台调用并读取其有界输出，或启动由通用 job 工具控制的后台进程。它需要已挂载的执行器 Service Provider 与 shell 环境注册表，并拥有所有模型可见的渲染细节，包括工具 schema 与 `[exit code: N]` 标记。
+
+## 目录
+
+- [工具](#tools)
+- [UI 呈现](#ui-presentation)
+- [模型体验](#model-experience)
+- [已知限制与延后工作](#known-limitations-and-deferred-work)
+- [开发备注](#dev-note)
+
 
 基于 `ctx.bun` 执行器 seam 注册的、面向模型的 `bun` 工具。前台执行留在该 seam 之后；后台进程句柄注册到通用 `ctx.jobs` 运行时，并通过 `@deepseek-ai/dsh-tool-jobs` 的 `job_output`、`job_list` 与 `job_kill` 控制。
 
-需要已加载的执行器 Service Provider（例如 `@deepseek-ai/dsh-bun-local`）以及 [`@deepseek-ai/dsh-shell-env`](../../shell/shell-env/README.md) 注册表；在每个注入服务都存在之前插件保持挂起（`inject: ['tools', 'bun', 'systemPrompt', 'shellEnv']`）。
+需要已加载的执行器 Service Provider（例如 `@deepseek-ai/dsh-bun-local`）以及 [`@deepseek-ai/dsh-shell-env`](../../shell/shell-env/README.zh.md) 注册表；在每个注入服务都存在之前插件保持挂起（`inject: ['tools', 'bun', 'systemPrompt', 'shellEnv']`）。
 
 包根只暴露 Cordis 插件约定（`name`、`inject`、`Config`、`apply`）；结果渲染与后台进程适配留在包内部。
 
 插件还贡献 `tool:bun` 提示词段落（顺序 106）：检查每条结果上的 `[exit code: N]` 标记，并把 `args` 作为列表而不是 shell 字符串传入。
 
+<a id="tools"></a>
 ## 工具
 
 ### `bun`
@@ -28,10 +46,12 @@
 
 当 `run_in_background` 为 true 时，本插件把调用方 agent 登记为所有者，并把返回的 `BunProcess` 句柄适配为通用的取消/完成/增量输出钩子。`enableRunInBackground: false` 会移除该参数，并在执行时拒绝强制后台调用。
 
+<a id="ui-presentation"></a>
 ## UI 呈现
 
 前台调用是携带 argv、描述、cwd、输出与解析后退出状态的终端卡片。后台启动是通用执行卡片，因为它只返回 job id。这些呈现器是纯函数且可重放。
 
+<a id="model-experience"></a>
 ## 模型体验
 
 ### 系统提示词
@@ -58,7 +78,7 @@ Check the [exit code: N] marker on every bun result; investigate failures before
 
 #### 模型看到什么
 
-模型看到生成的 [`bun` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-bun)。仅当此生产者启用时才出现 `run_in_background`。
+模型看到生成的 [`bun` schema](../../../docs/tool-catalog.zh.md#deepseek-aidsh-tool-bun)。仅当此生产者启用时才出现 `run_in_background`。
 
 #### Token 影响
 
@@ -86,7 +106,7 @@ Check the [exit code: N] marker on every bun result; investigate failures before
 
 #### 模型看到什么
 
-启动恰好返回 `started background job <jobId>`。此生产者向通用 job 运行时提供增量进程输出与终态细节。[`dsh-tool-jobs`](../../jobs/tool-jobs/README.md) 拥有可见状态行。
+启动恰好返回 `started background job <jobId>`。此生产者向通用 job 运行时提供增量进程输出与终态细节。[`dsh-tool-jobs`](../../jobs/tool-jobs/README.zh.md) 拥有可见状态行。
 
 #### Token 影响
 
@@ -112,6 +132,18 @@ Check the [exit code: N] marker on every bun result; investigate failures before
 
 ## 已知限制与延后工作
 
+<a id="known-limitations-and-deferred-work"></a>
+
 - **重放退出胶囊从结果文本解析** — 与 `dsh-tool-bash` 相同的残留。
 - **没有沙箱升权字段** — 本轮没有沙箱执行器。
 - **后台进程没有执行器超时** — 工作不再需要时调用方必须使用 `job_kill`。
+
+<a id="dev-note"></a>
+### 开发备注
+
+<details>
+<summary>维护者的工作上下文——点击展开</summary>
+
+None.
+
+</details>

@@ -39,6 +39,7 @@ harness 由 `packages/` 下的 npm 包组装而成，按能力系列分组：会
 | [`e2b/`](e2b/README.zh.md) | E2B 远程运行时提供方 |
 | [`subprocess/`](subprocess/README.zh.md) | 子进程能力系列：Service Definition + 本地进程树提供方 |
 | [`shell/`](shell/README.zh.md) | Bash 能力系列：执行器 seam、本地实现、面向模型的工具 |
+| [`bun/`](bun/README.zh.md) | Bun 能力家族：Service Definition + 本地 provider + `bun` 工具 Consumer |
 | [`terminal/`](terminal/README.zh.md) | 持久 PTY 能力系列：限定所有者范围的会话、本地实现、面向模型的工具 |
 | [`code-runtime/`](code-runtime/README.zh.md) | 代码执行能力系列：Service Definition + worker 线程提供方 + PTC mode Consumer |
 | [`sandbox/`](sandbox/README.zh.md) | 进程限制 seam；bwrap/Landlock/Seatbelt 后端 |

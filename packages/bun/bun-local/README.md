@@ -1,11 +1,29 @@
+---
+description: "The local Service Provider for the Bun executor seam, for deployments and maintainers configuring or debugging host Bun invocation."
+kind: "package-reference"
+---
+
 # @deepseek-ai/dsh-bun-local
 
 English | [中文](README.zh.md)
+## Summary
+
+`dsh-bun-local` is the local Service Provider for `ctx.bun`: each invocation spawns `<bunPath> …args` as a managed process group through the `ctx.subprocess` service, applying configured working directory, timeout, and output budgets and classifying timeouts and cancellations. Background starts return a live `BunProcess` handle immediately, and a missing Bun binary fails the plugin load.
+
+## Table of Contents
+
+- [Config](#config)
+- [Behavior](#behavior)
+- [Model Experience](#model-experience)
+- [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
+
 
 Local Service Provider for the `@deepseek-ai/dsh-bun` executor seam over the [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) service: `LocalBunExecutor` spawns `<bunPath> …args` per call as a managed process group through `ctx.subprocess`. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
 
 The package root exports the default and named `LocalBunExecutor` plugin plus its `Config`. A missing Bun binary **fails the plugin load**.
 
+<a id="config"></a>
 ## Config
 
 ```yaml
@@ -21,6 +39,7 @@ The package root exports the default and named `LocalBunExecutor` plugin plus it
     graceMs: 3000                # kill escalation and post-exit pipe-drain grace
 ```
 
+<a id="behavior"></a>
 ## Behavior
 
 - **Spawn per call, no Bun state** — every call is a fresh process; cwd and environment do not persist.
@@ -33,6 +52,7 @@ The package root exports the default and named `LocalBunExecutor` plugin plus it
 
 This package does not vendor Bun into the workspace.
 
+<a id="model-experience"></a>
 ## Model Experience
 
 Indirectly, through `dsh-tool-bun`, which renders this executor's bounded stdout/stderr tails, background-process deltas, spill-file paths, and infrastructure failures.
@@ -43,6 +63,18 @@ No direct invalidation; the named consumer owns any request-prefix changes.
 
 ## Known Limitations and Deferred Work
 
+<a id="known-limitations-and-deferred-work"></a>
+
 - **Unconfined by itself** — invocations run with the harness process's authority. A `bun-sandbox` provider is deferred.
 - **Host Bun required** — the plugin will not load without a spawnable `bun` (or an explicit `bunPath`).
 - **A background spawn-failure note is single-delivery** — the same residual as `dsh-bash-local`.
+
+<a id="dev-note"></a>
+### Dev Note
+
+<details>
+<summary>Working context for maintainers — click to expand</summary>
+
+None.
+
+</details>
