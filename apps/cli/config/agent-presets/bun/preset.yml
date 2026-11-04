@@ -1,3 +1,0 @@
-name: Bun mode
-description: Standard coding agent plus an opt-in bun tool. The host bun executable must be on PATH or set bunPath.
-order: 6
